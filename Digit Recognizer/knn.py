@@ -57,6 +57,7 @@ def knn_classify():
     # knn.fit(train_data, train_label)
     result = clf.predict(test_data)
     save_results(result)
+    print('done!')
 
 if __name__ == '__main__':
     knn_classify()
