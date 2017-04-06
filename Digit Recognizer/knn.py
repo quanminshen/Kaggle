@@ -2,18 +2,7 @@ import numpy as np
 import operator
 from sklearn import neighbors
 from sklearn.model_selection import GridSearchCV
-
-
-def load_train_data():
-    data = np.loadtxt(open('data/train.csv'), dtype=np.float, delimiter=',', skiprows=20000)
-    label = data[:, 0]
-    data = data[:, 1:]
-    return data, label
-
-
-def load_test_data():
-    data = np.loadtxt(open('data/test.csv'), dtype=np.float, delimiter=',', skiprows=1)
-    return data
+import data_io
 
 
 def classify(in_x, data_set, labels, k):
@@ -33,16 +22,9 @@ def classify(in_x, data_set, labels, k):
     return sorted_class_count[0][0]
 
 
-def save_results(result):
-    idx = np.array([range(1, result.shape[0]+1)]).transpose()
-    result = np.array([result]).transpose()
-    np.savetxt('data/result.csv', np.hstack((idx, result)), fmt='%d', delimiter=',',
-               header='ImageId,Label', comments='')
-
-
 def knn_classify():
-    train_data, train_label = load_train_data()
-    test_data = load_test_data()
+    train_data, train_label = data_io.load_train_data()
+    test_data = data_io.load_test_data()
     k = np.linspace(1, 10, 10, dtype=np.int)
     parameters = {'n_neighbors': k, 'weights': ['uniform', 'distance']}
     knn = neighbors.KNeighborsClassifier()
@@ -56,7 +38,7 @@ def knn_classify():
     # knn = neighbors.KNeighborsClassifier(n_neighbors=5, weights='distance', n_jobs=-1)
     # knn.fit(train_data, train_label)
     result = clf.predict(test_data)
-    save_results(result)
+    data_io.save_results(result)
     print('done!')
 
 if __name__ == '__main__':
