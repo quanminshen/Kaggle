@@ -39,7 +39,7 @@ def knn_classify():
     # knn.fit(train_data, train_label)
     result = clf.predict(test_data)
     data_io.save_results(result)
-    print('done!')
+    print('done! git test')
 
 if __name__ == '__main__':
     knn_classify()
